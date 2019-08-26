@@ -1,0 +1,29 @@
+; This is the file you will use for the lab assignment
+; Make sure to comment your code properly and don't exceed 
+; the line limitation for this assignment.  Good luck!
+
+; read 10 values starting from x3132
+; if a value is positive, add them together
+; if the value is negative or zero, go to the next value
+
+; R0 holds the memory address of the current value
+; R1 holds the current value
+; R2 is the counter
+; R5 holds the sum of the positive numbers
+
+0011 0001 0000 0000 ; x3100 - starting address of the program
+
+; The program description and code starts here
+0101 010 010 1 00000 ; R2<-R2 AND imm5(00000)	clear R2
+0001 010 010 1 01010 ; R2<-R2+10		set R2 to 10
+0101 101 101 1 00000 ; R5<-R5 AND imm5(00000)  	clear R5
+1110 000 000101101   ; R0<-PC+45		set R0 to memory address x3131
+0101 010 010 1 11111 ; R2<-R2 AND imm5(11111)	set nzp to R2
+0000 1 0 0 000000110 ; if(N) PC=PC+6		if R2 is negative, exit the loop
+0001 010 010 1 11111 ; R2<-R2-1 		decrease R2 by 1
+0001 000 000 1 00001 ; R0<-R0+1			increment R0
+0110 001 000 000000  ; R1<-mem[R0+0]  		set R1 to memory stored at address of R0
+0000 1 1 0 111111010 ; if(NZ) PC=PC-6		loop back to "set nzp to R2" if R1 is negative or zero
+0001 101 101 0 00 001; R5<-R5+R1		add R1 to R5
+0000 1 1 1 111111000 ; PC=PC-8			jump to "set nzp to R2"
+1111 0000 0010 0101  ; HALT			HALT
